@@ -44,12 +44,17 @@ app.use(bodyparser.json())
 app.engine('handlebars',handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine','handlebars')
 //mongoose
-mongoose.Promise = global.Promise;
- mongoose.connect("mongodb://localhost/blogapp").then(()=>{
-    console.log("conectado ao mongo")
- }).catch((err)=>{
-    console.log("erro ao se conectar")
- })
+mongoose.Promise = global.Promise
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("✅ Conectado ao MongoDB com sucesso")
+}).catch((err) => {
+  console.log("❌ Erro ao se conectar:", err)
+})
+
  //public
  app.use(express.static(path.join(__dirname,"public")))
 
