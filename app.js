@@ -43,17 +43,20 @@ app.use(bodyparser.json())
 //handlebars
 app.engine('handlebars',handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine','handlebars')
-//mongoose
-mongoose.Promise = global.Promise
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log("✅ Conectado ao MongoDB com sucesso")
-}).catch((err) => {
-  console.log("❌ Erro ao se conectar:", err)
-})
+
+mongooserequire("dotenv").config();
+const mongoose = require("mongoose");
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ Conectado ao MongoDB via Railway com sucesso");
+  })
+  .catch((err) => {
+    console.error("❌ Erro ao conectar no MongoDB do Railway:", err);
+  });
 
  //public
  app.use(express.static(path.join(__dirname,"public")))
