@@ -15,6 +15,7 @@ const Categoria = mongoose.model("categorias")
 const usuarios = require("./routes/usuario")
 const passport = require("passport")
 require("./config/auth")(passport)
+const db = require("./config/db")
 
 //configuração
 
@@ -45,11 +46,12 @@ app.engine('handlebars',handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine','handlebars')
 
 
-mongooserequire("dotenv").config();
+require("dotenv").config();
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(db.mongoURI)
+
   .then(() => {
     console.log("✅ Conectado ao MongoDB via Railway com sucesso");
   })
