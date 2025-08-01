@@ -69,7 +69,7 @@ module.exports = connectDB;
 console.log("MONGO_URI:", process.env.MONGO_URI);
 
 
-
+console.log("MONGO_URI =", JSON.stringify(process.env.MONGO_URI));
  //public
  app.use(express.static(path.join(__dirname,"public")))
 
