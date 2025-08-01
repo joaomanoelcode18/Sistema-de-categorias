@@ -15,7 +15,7 @@ const Categoria = mongoose.model("categorias")
 const usuarios = require("./routes/usuario")
 const passport = require("passport")
 require("./config/auth")(passport)
-const db = require("./config/db")
+
 
 //configuração
 
@@ -50,16 +50,18 @@ require("dotenv").config();
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("✅ Conectado ao MongoDB via Railway com sucesso");
-})
-.catch((err) => {
-  console.error("❌ Erro ao conectar no MongoDB do Railway:", err);
-});
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI); // remove opções obsoletas
+    console.log("✅ Conectado ao MongoDB com sucesso.");
+  } catch (err) {
+    console.error("❌ Erro ao conectar no MongoDB:", err);
+  }
+};
+
+module.exports = connectDB;
+
 
  //public
  app.use(express.static(path.join(__dirname,"public")))
