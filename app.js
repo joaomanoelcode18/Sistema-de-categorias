@@ -46,7 +46,7 @@ app.engine('handlebars',handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine','handlebars')
 
 require("dotenv").config();
-const mongoose = require("mongoose");
+
 
 mongoose.Promise = global.Promise;
 
