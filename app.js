@@ -142,7 +142,7 @@ app.use('/admin', admin)
 app.use("/usuarios", usuarios)
 
 //memory
-
+const mongoUri = process.env.MONGO_URI.trim();
 app.use(session({
   secret: "cursodenode",
   resave: true,
@@ -150,6 +150,17 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia (opcional)
 }));
+
+mongoose.connect(mongoUri)
+  .then(() => {
+    console.log("✅ MongoDB conectado");
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Erro ao conectar no MongoDB:", err);
+  });
 
 //outros
 
