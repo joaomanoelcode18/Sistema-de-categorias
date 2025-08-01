@@ -65,6 +65,8 @@ const connectDB = async () => {
 
 module.exports = connectDB;
 
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
 
 
  //public
