@@ -15,6 +15,9 @@ const Categoria = mongoose.model("categorias")
 const usuarios = require("./routes/usuario")
 const passport = require("passport")
 require("./config/auth")(passport)
+require("dotenv").config();
+const MongoStore = require("connect-mongo");
+
 
 
 //configuração
@@ -45,7 +48,7 @@ app.use(bodyparser.json())
 app.engine('handlebars',handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine','handlebars')
 
-require("dotenv").config();
+
 
 
 mongoose.Promise = global.Promise;
@@ -61,6 +64,7 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
 
 
  //public
@@ -134,6 +138,17 @@ app.get("/404",(req, res)=>{
 })
 app.use('/admin', admin)
 app.use("/usuarios", usuarios)
+
+//memory
+
+app.use(session({
+  secret: "cursodenode",
+  resave: true,
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia (opcional)
+}));
+
 //outros
 
 const PORT = process.env.PORT || 8081;
