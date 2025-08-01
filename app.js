@@ -1,4 +1,5 @@
 //carrengando modules
+require("dotenv").config();
 const express = require('express');
 const handlebars =require('express-handlebars');
 const bodyparser = require('body-parser');
@@ -15,8 +16,8 @@ const Categoria = mongoose.model("categorias")
 const usuarios = require("./routes/usuario")
 const passport = require("passport")
 require("./config/auth")(passport)
-require("dotenv").config();
 const MongoStore = require("connect-mongo");
+
 
 
 
