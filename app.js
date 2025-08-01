@@ -17,8 +17,7 @@ const usuarios = require("./routes/usuario")
 const passport = require("passport")
 require("./config/auth")(passport)
 const MongoStore = require("connect-mongo");
-
-
+const mongoUri = process.env.MONGO_URI.trim();
 
 
 //configuração
@@ -66,12 +65,12 @@ const connectDB = async () => {
 
 module.exports = connectDB;
 
-console.log("MONGO_URI:", process.env.MONGO_URI);
 
+// ✅ Log útil e seguro para debug (não expõe senha)
+console.log("🔍 mongoUri =", JSON.stringify(mongoUri));
 
-console.log("MONGO_URI =", JSON.stringify(process.env.MONGO_URI));
- //public
- app.use(express.static(path.join(__dirname,"public")))
+// ✅ Servir arquivos estáticos
+app.use(express.static(path.join(__dirname, "public")));
 
  //app.use((req, res ,next)=>{
    //console.log("oi eu sou um middleware")
@@ -143,7 +142,6 @@ app.use('/admin', admin)
 app.use("/usuarios", usuarios)
 
 //memory
-const mongoUri = process.env.MONGO_URI.trim();
 app.use(session({
   secret: "cursodenode",
   resave: true,
@@ -151,7 +149,7 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia (opcional)
 }));
-
+const PORT = process.env.PORT || 8081;
 mongoose.connect(mongoUri)
   .then(() => {
     console.log("✅ MongoDB conectado");
@@ -165,8 +163,5 @@ mongoose.connect(mongoUri)
 
 //outros
 
-const PORT = process.env.PORT || 8081;
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+
